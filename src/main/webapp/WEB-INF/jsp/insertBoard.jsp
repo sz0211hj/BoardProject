@@ -25,19 +25,19 @@
 		<form action="insertBoard.do" method="post">
 			<table class="table" align="center">
 				<tr>
-					<th style="width: 100px; text-align: center;">TITLE</th>
-					<td style="width: 400px;"><input type="text" style="width: 400px" name="b_title"></td>
-					<th style="width: 100px; text-align: center;">WRITER</th>
-					<td style="width: 200px; text-align: center;"><input type="text" name="b_writer"></td>
+					<th style="width: 100px; text-align: center;">제목</th>
+					<td style="width: 400px;"><input type="text" style="width: 400px" name="b_title" required></td>
+					<th style="width: 100px; text-align: center;">작성자</th>
+					<td style="width: 200px; text-align: center;"><input type="text" name="b_writer" required></td>
 				<tr>
 				<tr>
-					<th style="width: 100px; text-align: center;">CONTENT</th>
-					<td colspan="6" style="width: 700px; text-align: center;"><textarea rows="10" cols="80" name="b_content"></textarea>
+					<th style="width: 100px; text-align: center;">내용</th>
+					<td colspan="6" style="width: 700px; text-align: center;"><textarea rows="10" cols="80" name="b_content" required></textarea>
 				</tr>
 			</table>
 		<div align="center">
 			<button type="submit" class="btn btn-primary">등록</button>
-			<button type="reset" class="btn btn-danger">취소</button>
+			<button type="button" class="btn btn-danger" onclick="location.href='listBoard.do'">취소</button>
 		</div>
 		</form>
 	
