@@ -7,14 +7,23 @@
 	
 		SELECT *
 		FROM BOARD
+		<where>
+			<if test="b_title != null and b_title != ''">
+				UPPER(B_TITLE) LIKE CONCAT('%', #{b_title}, '%')
+			</if>
+		</where>
 		LIMIT 5 OFFSET #{start}
-		
 	</select>
 	
 <!--게시글 갯수 -->
 <select id="getCount" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARD
+		<where>
+			<if test="b_title != null and b_title != ''">
+				UPPER(B_TITLE) LIKE CONCAT('%', #{b_title}, '%')
+			</if>
+		</where>
 </select>		
 
 <!-- 단건조회 -->
@@ -35,11 +44,13 @@
 				  , B_WRITER
 				  , B_CONTENT
 				  , B_DATE
+				  , DELT_YN
 				 )
 			VALUES ( #{b_title}
 				  , #{b_writer}
 				  , #{b_content}
 				  , NOW()
+				  , 'N'
 				  )
 
 	</insert>
@@ -57,26 +68,55 @@
 	</update>
 
 <!-- 삭제  -->
-	<delete id="deleteBoard" parameterType="BoardVO">
+	<update id="deleteBoard" parameterType="BoardVO">
+	
+		UPDATE BOARD
+		SET DELT_YN ='Y'
+		WHERE B_NO=#{b_no}	
+		
+	</update>
+
+<!-- 	<delete id="deleteBoard" parameterType="BoardVO">
 
 			DELETE FROM BOARD
 			WHERE B_NO=#{b_no}
 
-	</delete>
+	</delete> -->
 
 <!-- 로그기록 -->
-	<select id="logList" resultType="BoardVO">
+	<select id="logList" resultType="BoardBackupVO">
 	
 		SELECT *
 		FROM BOARDBACKUP
+		<where>
+			<if test="b_no != null and b_no != ''">
+				UPPER(B_NO) LIKE CONCAT(#{b_no})
+			</if>
+		</where>
 		ORDER BY LOGNUM
 		LIMIT 5 OFFSET #{start}
 	</select>
+
+<!-- 단건로그  -->
+	<select id="logListOne" resultType="BoardBackupVO">
+		
+		SELECT *
+		FROM BOARDBACKUP
+		WHERE B_NO = #{b_no}
+	
+	
+	</select>
+
 
 <!--로그 갯수 -->
 <select id="getCountLog" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARDBACKUP
+		<where>
+			<if test="b_no != null and b_no != ''">
+				UPPER(B_NO) LIKE CONCAT(#{b_no})
+			</if>
+		</where>
 </select>	
 
 </mapper>

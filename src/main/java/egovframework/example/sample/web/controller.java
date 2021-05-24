@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.example.cmmn.Paging;
+import egovframework.example.sample.service.BoardBackupVO;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.example.sample.service.impl.BoardMapper;
 
@@ -95,7 +96,7 @@ public class controller {
 	
 	//로그 조회
 	@RequestMapping("/logList.do")
-	public String logList(BoardVO vo, Model model,Paging paging){
+	public String logList(BoardBackupVO vo, Model model,Paging paging){
 		paging.setPageUnit(5); //한 페이지에 표시되는 레코드 건수
 		paging.setPageSize(3); // 표시 되는 페이지 번호
 		//페이징
@@ -107,7 +108,7 @@ public class controller {
 		paging.setTotalRecord(bm.getCountLog(vo));
 		model.addAttribute("paging", paging);  //페이징
 		
-		List<BoardVO> logList = bm.logList(vo);
+		List<BoardBackupVO> logList = bm.logList(vo);
 		model.addAttribute("logList", logList);
 		return "logList";
 	}

@@ -21,5 +21,8 @@ public interface BoardService {
 	public int deleteBoard(BoardVO vo);
 	
 	//로그조회
-	public List<BoardVO> logList(BoardVO vo);
+	public List<BoardBackupVO> logList(BoardBackupVO vo);
+	
+	//로그단건조회
+	public BoardBackupVO logListOne(BoardBackupVO vo);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import egovframework.example.sample.service.BoardBackupVO;
 import egovframework.example.sample.service.BoardVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
@@ -28,9 +29,11 @@ public interface BoardMapper {
 	public int deleteBoard(BoardVO vo);
 	
 	//로그 페이징
-	public int getCountLog(BoardVO vo);
+	public int getCountLog(BoardBackupVO vo);
 	
 	//로그조회
-	public List<BoardVO> logList(BoardVO vo);
+	public List<BoardBackupVO> logList(BoardBackupVO vo);
 
+	//로그단건조회
+	public BoardBackupVO logListOne(BoardBackupVO vo);
 }
