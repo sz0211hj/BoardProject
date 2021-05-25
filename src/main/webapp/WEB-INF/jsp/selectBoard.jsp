@@ -59,6 +59,7 @@ function deleteAlert(str) {
 var yn = confirm("<s:message code="board.del"/>");
 
 if (yn) {
+	alert("<s:message code = "board.del.success"/>");
 	location.href = "deleteBoard.do?b_no=" + str;
 } else {
 	alert("<s:message code="board.del.fail"/>");

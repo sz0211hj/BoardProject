@@ -12,7 +12,11 @@
 <title>게시판 리스트</title>
 <style>
 table {
-	width: 900px !important;
+	width: 1000px !important;
+}
+#sortbtn {
+    padding: .10rem .1rem !important;
+    font-size: .100rem !important;
 }
 </style>
 </head>
@@ -21,7 +25,7 @@ table {
 		<h1>게시판 리스트</h1>
 	</div>
 <!-- 등록, 로그보기 버튼 Start-->
-	<div style="width: 900px; margin: 0 auto; height: 50px; position: relative;">
+	<div style="width: 1000px; margin: 0 auto; height: 50px; position: relative;">
 		<button type="button" class="btn btn-primary"
 			onclick="location.href='insertBoardForm.do'"
 			style="position: absolute; left: 0;">글 등록</button>
@@ -33,13 +37,23 @@ table {
 
 <!-- 게시판 리스트 Start -->
 	<div align="center">
+	<form action="listBoard.do" name="searchFrm">
 		<table id="table" class="table table-hover">
 			<thead>
 				<tr class="table-primary" align="center">
-					<th style="width: 100px; text-align: center;">글 번호</th>
-					<th style="width: 400px; text-align: center;">제목</th>
-					<th style="width: 100px; text-align: center;">작성자</th>
-					<th style="width: 200px; text-align: center;">작성일자</th>
+					<th style="width: 200px; text-align: center;">글 번호
+						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="button" value="BNO_ASC">▲</button>
+						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="button" value="BNO_DESC">▼</button>
+					</th>
+					<th style="width: 400px; text-align: center;">제목
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BTITLE_ASC'">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BTITLE_DESC'">▼</button>					
+					</th>
+					<th style="width: 100px; text-align: center;">작성자</th>			
+					<th style="width: 200px; text-align: center;">작성일자
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BDATE_ASC'">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BDATE_DESC'">▼</button>
+					</th>
 					<th style="width: 100px; text-align: center;">history</th>
 			</thead>
 
@@ -85,9 +99,10 @@ table {
 			</tbody>
 
 		</table>
-	
-	<!-- 검색창 Start -->
-	<div style="width: 800px; margin: 0 auto; height: 50px; position: relative;">
+		
+	<!-- 검색창,총 게시물 수 Start -->
+	<div style="width: 1000px; margin: 0 auto; height: 50px; position: relative;">
+		<p style="position: absolute; left: 0; font-size: 5px">총 게시물 :&nbsp;&nbsp;${count }</p>
 		<form class="d-flex" action="listBoard.do">
 				<input type="hidden" name="page" value="1">
        			<input class="form-control me-sm-2" type="text" style="width: 250px; height: 38px; position: absolute; right: 0;" placeholder="제목" id="b_title" name="b_title">
@@ -98,7 +113,7 @@ table {
 		
 		
 	<!-- 페이징 시작-->
-		<form action="listBoard.do" name="searchFrm">
+		<!-- <form action="listBoard.do" name="searchFrm"> -->
 			<input type="hidden" name="page" value="1">
 		</form>
 		<my:paging paging="${paging}" jsFunc="goPage" />
@@ -114,8 +129,17 @@ table {
 			searchFrm.page.value = p;
 			searchFrm.submit();
 		}
-		
-
+	
+	$("#button").on("click",function(){
+	         var btn = $("#button").val();
+	         if(btn == null || btn == ""){
+	            return false;
+	         }else{
+	            searchFrm.submit();
+	            return true;
+	         }
+	      })
+	
 	</script>
 
 </body>

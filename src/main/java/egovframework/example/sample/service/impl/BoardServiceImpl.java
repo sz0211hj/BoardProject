@@ -26,11 +26,13 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public BoardVO selectBoard(BoardVO vo) {
+	
 		return boardDAO.selectBoard(vo);
 	}
 
 	@Override
 	public int insertBoard(BoardVO vo) {
+		
 		//글자 수 제한 java단에서 해주는것 넣기
 		int result = boardDAO.insertBoard(vo);
 		return result;

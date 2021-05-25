@@ -15,11 +15,18 @@
  */
 package egovframework.example.sample.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.example.cmmn.Paging;
@@ -38,7 +45,7 @@ public class controller {
 	//전체조회
 	@RequestMapping("/listBoard.do")
 	public String listBoard(BoardVO vo, Model model,Paging paging){
-		paging.setPageUnit(5); //한 페이지에 표시되는 레코드 건수
+		paging.setPageUnit(10); //한 페이지에 표시되는 레코드 건수
 		paging.setPageSize(3); // 표시 되는 페이지 번호
 		//페이징
 		if(vo.getPage() == null ){
@@ -49,8 +56,13 @@ public class controller {
 		paging.setTotalRecord(bm.getCount(vo));
 		model.addAttribute("paging", paging); //페이징
 		
+		//게시글List
 		List<BoardVO> list = bm.listBoard(vo);
 		model.addAttribute("list", list);
+		
+		//총 게시글 수 - 삭제된 글 제외
+		int count = bm.getCount(vo);
+		model.addAttribute("count", count);
 		return "listBoard";
 	}
 
@@ -68,8 +80,26 @@ public class controller {
 	}
 	
 	@RequestMapping("/insertBoard.do")
-	public String insertBoard(BoardVO vo){
-		bm.insertBoard(vo);
+	public String insertBoard(BoardVO vo, HttpServletResponse response) throws IOException{
+
+		String title = vo.getB_title();
+		String writer = vo.getB_writer();
+		String content = vo.getB_content();
+		
+		response.setContentType("text/html; charset=euc-kr");
+		PrintWriter out = response.getWriter();
+			if(title.length() > 50){
+				out.println("<script>alert('제목은 50자를 넘길 수 없습니다.');history.go(-1)</script>");
+				out.flush();
+			}else if(writer.length() > 50){
+				out.println("<script>alert('작성자는 50자를 넘길 수 없습니다.');history.go(-1)</script>");
+				out.flush();
+			}else if(content.length() > 250){
+				out.println("<script>alert('내용은 250자를 넘길 수 없습니다.');history.go(-1)</script>");
+				out.flush();	
+			}else{
+				bm.insertBoard(vo);	
+			}	
 		return "redirect:/listBoard.do";
 	}
 	

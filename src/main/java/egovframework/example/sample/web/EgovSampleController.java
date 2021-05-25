@@ -70,7 +70,7 @@ public class EgovSampleController {
 	protected DefaultBeanValidator beanValidator;
 
 	/**
-	 * 글 목록을 조회한다. (pageing)
+	 * 글 목록을 조회한다. (paging)
 	 * @param searchVO - 조회할 정보가 담긴 SampleDefaultVO
 	 * @param model
 	 * @return "egovSampleList"

@@ -46,7 +46,7 @@ th {
 			</tr>
 		</table>
 		<div align="center">
-			<button type="submit" class="btn btn-primary">등록</button>
+			<button type="button" class="btn btn-primary" onclick="insertAlert()">등록</button>
 			<button type="button" class="btn btn-danger"
 				onclick="location.href='listBoard.do'">취소</button>
 		</div>
@@ -54,7 +54,7 @@ th {
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">
 		//textarea 글자 수 제한
-		function fnChkByte(obj, maxByte) {
+ 		function fnChkByte(obj, maxByte) {
 			var str = obj.value;
 			var str_len = str.length;
 
@@ -77,7 +77,7 @@ th {
 			}
 
 			if (rbyte > maxByte) {
-				alert(maxByte + "<s:message code="board.text.Length"/>")
+				//alert(maxByte + "<s:message code="board.text.Length"/>")
 				str2 = str.substr(0, rlen); //문자열 자르기
 				obj.value = str2;
 				fnChkByte(obj, maxByte);
@@ -86,6 +86,18 @@ th {
 			}
 		}
 
+	//등록
+		function insertAlert() {
+			var yn = confirm("<s:message code="board.inst"/>");
+
+			if (yn) {
+				alert("<s:message code = "board.inst.success"/>");
+				return true;
+			} else {
+				alert("<s:message code="board.inst.fail"/>");
+				return false;				
+			}
+		}
 	</script>
 </body>
 </html>

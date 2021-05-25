@@ -12,11 +12,23 @@
 				UPPER(B_TITLE) LIKE CONCAT('%', #{b_title}, '%')
 			</if>
 		</where>
-		LIMIT 5 OFFSET #{start}
+ 		ORDER BY
+		<choose>
+			<when test="orderCond == 'BNO_ASC'">B_NO ASC</when>
+			<when test="orderCond == 'BNO_DESC'">B_NO DESC</when>
+			<when test="orderCond == 'BTITLE_ASC'">B_TITLE ASC</when>
+			<when test="orderCond == 'BTITLE_DESC'">B_TITLE DESC</when>
+			<when test="orderCond == 'BDATE_ASC'">B_DATE ASC</when>
+			<when test="orderCond == 'BDATE_DESC'">B_DATE DESC</when>
+			<otherwise>B_NO ASC</otherwise>						
+		</choose>
+		LIMIT 10 OFFSET #{start}
 	</select>
+		
 	
-<!--게시글 갯수 -->
+<!--페이징/게시글 갯수 -->
 <select id="getCount" resultType="int">
+
 		SELECT COUNT(*)
 		FROM BOARD
 		<where>
@@ -25,6 +37,7 @@
 			</if>
 		</where>
 </select>		
+
 
 <!-- 단건조회 -->
 	<select id="selectBoard" parameterType="BoardVO"
@@ -64,7 +77,7 @@
 				, B_CONTENT=#{b_content}
 				, B_DATE = NOW()
 			 WHERE B_NO=#{b_no}
-
+			
 	</update>
 
 <!-- 삭제  -->
@@ -103,7 +116,7 @@
 		SELECT *
 		FROM BOARDBACKUP
 		WHERE B_NO = #{b_no}
-	
+		ORDER BY B_DATE
 	
 	</select>
 
