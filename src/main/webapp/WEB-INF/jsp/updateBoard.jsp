@@ -23,7 +23,7 @@
 	<div align="center">
 		<h1 align="center">게시글 수정</h1>
 	</div>
-		<form action="updateBoard.do" method="post" onsubmit="return confirm('<s:message code="board.update"/>')">
+		<form action="updateBoard.do" method="post" onsubmit="return updateAlert('${list.b_no }')">
 			<table class="table" align="center">
 				<tr>
 					
@@ -40,27 +40,26 @@
 					<td colspan="6" style="width: 700px;"><textarea rows="10" cols="80" id="b_content" name="b_content">${list.b_content }</textarea>
 				</tr>
 			</table>
-		</form>
+
 		<div align="center">
-			<button type="submit" class="btn btn-primary" onclick="updateAlert('${list.b_no}')">등록</button>
+			<button type="submit" class="btn btn-primary">등록</button>
 			<button type="button" class="btn btn-dark" onclick="location.href='selectBoard.do?b_no=${list.b_no}'">뒤로</button>
 		</div>
-		
+		</form>		
 	
 </body>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
-
 //수정
 function updateAlert(str) {
-var yn = confirm("<s:message code="board.update"/>");
+	var yn = confirm("<s:message code="board.update"/>");
 
-if (yn) {
-	alert("<s:message code = "board.update.success"/>");
-	location.href = "updateBoard.do?b_no=" + str;
-} else {
-	alert("<s:message code="board.update.fail"/>");
-}
+	if (yn) {
+		alert("<s:message code = "board.update.success"/>");
+	} else {		
+		alert("<s:message code="board.update.fail"/>");
+		return false;
 	}
+		}
 </script>
 </html>

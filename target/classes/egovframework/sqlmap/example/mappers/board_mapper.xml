@@ -82,11 +82,12 @@
 
 <!-- 삭제  -->
 	<update id="deleteBoard" parameterType="BoardVO">
-	
-		UPDATE BOARD
-		SET DELT_YN ='Y'
-		WHERE B_NO=#{b_no}	
-		
+			UPDATE BOARD
+			SET DELT_YN ='Y'
+			WHERE B_NO IN 
+			<foreach item="item" index="index" collection="valueArr" open="(" close=")" separator=",">
+				#{item}	
+			</foreach>
 	</update>
 
 <!-- 	<delete id="deleteBoard" parameterType="BoardVO">

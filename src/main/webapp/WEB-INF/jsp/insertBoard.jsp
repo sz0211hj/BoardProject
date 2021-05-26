@@ -25,7 +25,7 @@ th {
 	<div align="center">
 		<h1 align="center">게시글 등록</h1>
 	</div>
-	<form action="insertBoard.do" method="post">
+	<form action="insertBoard.do" method="post" onsubmit="return insertAlert()">
 		<table class="table" align="center">
 			<tr>
 				<th style="width: 100px; text-align: center;">제목</th>
@@ -36,7 +36,7 @@ th {
 				<td style="width: 200px; text-align: center;">
 					<input type="text" id="input_text" name="b_writer" maxlength="100" required>
 				</td>
-			<tr>
+			</tr>
 			<tr>
 				<th style="width: 100px; text-align: center;">내용</th>
 				<td colspan="6" style="width: 700px; text-align: center;"><textarea
@@ -46,7 +46,7 @@ th {
 			</tr>
 		</table>
 		<div align="center">
-			<button type="button" class="btn btn-primary" onclick="insertAlert()">등록</button>
+			<button type="submit" class="btn btn-primary">등록</button>
 			<button type="button" class="btn btn-danger"
 				onclick="location.href='listBoard.do'">취소</button>
 		</div>
@@ -89,10 +89,8 @@ th {
 	//등록
 		function insertAlert() {
 			var yn = confirm("<s:message code="board.inst"/>");
-
 			if (yn) {
 				alert("<s:message code = "board.inst.success"/>");
-				return true;
 			} else {
 				alert("<s:message code="board.inst.fail"/>");
 				return false;				

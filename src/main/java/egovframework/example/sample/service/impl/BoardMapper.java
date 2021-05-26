@@ -2,7 +2,6 @@ package egovframework.example.sample.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 
 import egovframework.example.sample.service.BoardBackupVO;
 import egovframework.example.sample.service.BoardVO;

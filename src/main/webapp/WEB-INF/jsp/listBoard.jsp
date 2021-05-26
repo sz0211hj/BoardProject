@@ -41,18 +41,19 @@ table {
 		<table id="table" class="table table-hover">
 			<thead>
 				<tr class="table-primary" align="center">
+					<th><input type="checkbox" id="allCheck" name="allCheck" /></th> <!-- 전체선택 -->
 					<th style="width: 200px; text-align: center;">글 번호
-						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="button" value="BNO_ASC">▲</button>
-						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="button" value="BNO_DESC">▼</button>
+						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BNO_ASC">▲</button>
+						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BNO_DESC">▼</button>
 					</th>
 					<th style="width: 400px; text-align: center;">제목
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BTITLE_ASC'">▲</button>
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BTITLE_DESC'">▼</button>					
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BTITLE_ASC">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BTITLE_DESC">▼</button>					
 					</th>
 					<th style="width: 100px; text-align: center;">작성자</th>			
 					<th style="width: 200px; text-align: center;">작성일자
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BDATE_ASC'">▲</button>
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" onclick="location.href='listboard?orderCond=BDATE_DESC'">▼</button>
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BDATE_ASC">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BDATE_DESC">▼</button>
 					</th>
 					<th style="width: 100px; text-align: center;">history</th>
 			</thead>
@@ -64,6 +65,7 @@ table {
 							<c:when test="${list.delt_yn eq 'N' }">
 								<tr class="table-active"
 									onclick="location.href='selectBoard.do?b_no=${list.b_no}'">
+									<th><input type="checkbox"  name="delListRow" id="delListRow" value="${list.b_no }" onclick="event.cancelBubble = true;"></th>
 									<th style="text-align: center;">${list.b_no }
 										<input type="hidden" value="${list.delt_yn }">
 									</th>
@@ -79,6 +81,7 @@ table {
 						
 						<c:otherwise>
 							<tr class="table-active">
+								<th></th>
 								<th style="text-align: center;">${list.b_no }</th>
 								<td colspan="3" style="text-align: center">삭제된 게시글 입니다.</td>
 								<td style="text-align: center;">
@@ -93,27 +96,26 @@ table {
 				</c:if>
 				<c:if test="${fn:length(list) == 0}">
 					<tr>
-						<td colspan="4" style="text-align: center">등록된 게시글이 없습니다.</td>
+						<td colspan="6" style="text-align: center">등록된 게시글이 없습니다.</td>
 					</tr>
 				</c:if>
 			</tbody>
 
 		</table>
+		<button type="button" onclick="deleteValue()">삭제</button>
 		
 	<!-- 검색창,총 게시물 수 Start -->
 	<div style="width: 1000px; margin: 0 auto; height: 50px; position: relative;">
 		<p style="position: absolute; left: 0; font-size: 5px">총 게시물 :&nbsp;&nbsp;${count }</p>
-		<form class="d-flex" action="listBoard.do">
-				<input type="hidden" name="page" value="1">
+		<div class="d-flex">
        			<input class="form-control me-sm-2" type="text" style="width: 250px; height: 38px; position: absolute; right: 0;" placeholder="제목" id="b_title" name="b_title">
         		<button class="btn btn-secondary my-2 my-sm-0" style="position: absolute;  right: 0;" type="submit">Search</button>
-      	</form>
+      	</div>
      </div>	
 	<!-- 검색창 End -->
 		
 		
 	<!-- 페이징 시작-->
-		<!-- <form action="listBoard.do" name="searchFrm"> -->
 			<input type="hidden" name="page" value="1">
 		</form>
 		<my:paging paging="${paging}" jsFunc="goPage" />
@@ -130,6 +132,7 @@ table {
 			searchFrm.submit();
 		}
 	
+	//정렬
 	$("#button").on("click",function(){
 	         var btn = $("#button").val();
 	         if(btn == null || btn == ""){
@@ -139,7 +142,63 @@ table {
 	            return true;
 	         }
 	      })
+	//다중체크 삭제
 	
+	$(function(){
+		var chkObj =document.getElementsByName("delListRow") //체크된 것 개수
+		var rowCnt = chkObj.length;
+		
+		//전체선택시 모든 row check
+		$("input[name='allCheck']").click(function(){
+			var chk_listArr = $("input[name='delListRow']");
+				for(var i = 0; i<chk_listArr.length; i++){
+					chk_listArr[i].checked = this.checked;
+				}
+		});
+		//선택하나라도 체크 풀리면 전체선택도 체크해제
+		 $("input[name='delListRow']").click(function(){
+			if($("input[name='delListRow']:checked").length == rowCnt){
+				$("input[name='allCheck']")[0].checked = true;
+			}else{
+				$("input[name='allCheck']")[0].checked = false;
+			}		 
+		 });
+	}); 
+	
+	//
+
+		function deleteValue() {
+			var url = "deleteBoard.do";
+			var valueArr = new Array();
+			var list = $("input[name='delListRow']");
+			for (var i = 0; i < list.length; i++) {
+				if (list[i].checked) { //체크되어 있으면 배열에 값 저장
+					valueArr.push(list[i].value);
+				}
+				console.log(valueArr)
+			}
+			if (valueArr.length == 0) {
+				alert("선택된 글이 없습니다. ");
+			} else {
+				var chk = confirm("정말 삭제하시겠습니까?");
+				if (chk) {
+					$.ajax({
+						url : url,
+						type : "POST",
+						traditional : true,
+						dataType : "json",
+						data : {
+							valueArr : valueArr
+						}, // 
+
+					});//ajax end
+					alert("삭제 성공");
+					location.href = "listBoard.do";
+				} else {
+					alert("삭제 실패");
+				}
+			}
+		}
 	</script>
 
 </body>

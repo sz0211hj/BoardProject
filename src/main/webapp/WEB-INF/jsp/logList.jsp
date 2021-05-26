@@ -35,29 +35,27 @@ table {
 		<table class="table">
 			<thead>
 				<tr class="table-primary" align="center">
-					<th style="width: 50px; text-align: center;">NO</th>
 					<th style="width: 100px; text-align: center;">글 번호</th>
-					<th style="width: 400px; text-align: center;">제목</th>
-					<th style="width: 100px; text-align: center;">작성자</th>
-					<th style="width: 200px; text-align: center;">작성일자</th>
+					<th style="width: 200px; text-align: center;">변경일자</th>
 					<th style="width: 50px; text-align: center;">상태</th>
+					<th style="width: 400px; text-align: center;">제목</th>
 					<th style="width: 500px; text-align: center;">내용</th>
+					<th style="width: 100px; text-align: center;">작성자</th>	
 				</tr>
 			</thead>
 			<tbody>
 			<c:forEach items="${logList }" var="logList">
 					<tr class="table-active">
-						<th style="text-align: center;">${logList.logNum }</th>
 						<th style="text-align: center;">${logList.b_no }</th>
-						<td>${logList.b_title }</td>
-						<td style="text-align: center;">${logList.b_writer }</td>
 						<td style="text-align: center;">${logList.b_date }</td>
-						<td style="text-align: center; font-weight: bold;">
+						<td id="status" style="text-align: center; font-weight: bold;">
 							<c:if test="${logList.b_state eq 'C' }">등록</c:if>
 							<c:if test="${logList.delt_yn eq 'N' && logList.b_state eq 'U' }">수정</c:if>
 							<c:if test="${logList.delt_yn eq 'Y' && logList.b_state eq 'U'}">삭제</c:if>
 						</td>
+						<td>${logList.b_title }</td>
 						<td>${logList.b_content }</td>
+						<td style="text-align: center;">${logList.b_writer }</td>
 					</tr>
 			</c:forEach>
 		</tbody>
@@ -88,6 +86,13 @@ table {
 				searchFrm.page.value = p;
 				searchFrm.submit();
 			}
+	//문자열 비교
+	$(function() {
+		var i = $('#status').text();
+			console.log(i);
+		
+	});
+	
 	</script>
 
 

@@ -20,4 +20,6 @@ public class BoardVO {
 	private String b_state;
 	private String delt_yn;
 	private String orderCond;
+
+	private String[] valueArr;
 }
