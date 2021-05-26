@@ -86,28 +86,27 @@ public class controller {
 		return "insertBoard";
 	}
 	
-	@RequestMapping("/insertBoard.do")
-	public String insertBoard(BoardVO vo, HttpServletResponse response) throws IOException{
+	@ResponseBody
+	@RequestMapping(value = "/insertBoard.do", method = RequestMethod.POST)
+	public String insertBoard(@ModelAttribute  BoardVO vo) throws IOException{
 
 		String title = vo.getB_title();
 		String writer = vo.getB_writer();
 		String content = vo.getB_content();
-		
-		response.setContentType("text/html; charset=euc-kr");
-		PrintWriter out = response.getWriter();
+		String val = "";
+		System.out.println("=================================" + content);
+		System.out.println("=================================" + content.length());
 			if(title.length() > 50){
-				out.println("<script>alert('제목은 50자를 넘길 수 없습니다.');history.go(-1)</script>");
-				out.flush();
+				val = "b_title.error";
 			}else if(writer.length() > 50){
-				out.println("<script>alert('작성자는 50자를 넘길 수 없습니다.');history.go(-1)</script>");
-				out.flush();
+				val = "b_writer.error";
 			}else if(content.length() > 250){
-				out.println("<script>alert('내용은 250자를 넘길 수 없습니다.');history.go(-1)</script>");
-				out.flush();	
+				val = "b_content.error";
 			}else{
 				bm.insertBoard(vo);	
+				val = "board.inst.success";
 			}	
-		return "redirect:/listBoard.do";
+		return val;
 	}
 	
 	//수정

@@ -13,6 +13,10 @@
 <style>
 table {
 	width: 1000px !important;
+	margin-bottom: 0px !important;
+}
+th{
+	font-size: 15px !important;
 }
 #sortbtn {
     padding: .10rem .1rem !important;
@@ -24,36 +28,38 @@ table {
 	<div align="center">
 		<h1>게시판 리스트</h1>
 	</div>
-<!-- 등록, 로그보기 버튼 Start-->
-	<div style="width: 1000px; margin: 0 auto; height: 50px; position: relative;">
-		<button type="button" class="btn btn-primary"
-			onclick="location.href='insertBoardForm.do'"
-			style="position: absolute; left: 0;">글 등록</button>
-		<button type="button" class="btn btn-danger btn-sm"
+<!-- 검색, 로그보기 버튼 Start-->
+<form action="listBoard.do" name="searchFrm">
+	<div style="width: 1000px; margin: auto; height: 50px; position: relative;">
+       		<input class="form-control me-sm-2" type="text" style="width: 250px; height: 38px; position: absolute; left: 0;" placeholder="제목" id="b_title" name="b_title">
+        	<button class="btn btn-secondary my-2 my-sm-0" style="position: absolute;   margin-left:250px; left: 0;" type="submit">Search</button>
+			<button type="button" class="btn btn-secondary btn-sm"
 			onclick="location.href='logList.do'"
 			style="position: absolute; right: 0;">전체로그내역</button>
 	</div>
-<!-- 등록, 로그보기 버튼  End-->
+<!-- 검색, 로그보기 버튼  End-->
 
 <!-- 게시판 리스트 Start -->
 	<div align="center">
-	<form action="listBoard.do" name="searchFrm">
 		<table id="table" class="table table-hover">
 			<thead>
-				<tr class="table-primary" align="center">
-					<th><input type="checkbox" id="allCheck" name="allCheck" /></th> <!-- 전체선택 -->
-					<th style="width: 200px; text-align: center;">글 번호
-						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BNO_ASC">▲</button>
-						<button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BNO_DESC">▼</button>
+				<tr align="center">
+					<th><input type="checkbox" class="form-check-input" id="allCheck" name="allCheck" /></th> <!-- 전체선택 -->
+					<th style="width: 100px; text-align: center;">글 번호
+						<button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BNO_ASC">▲</button>
+						<button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BNO_DESC">▼</button>
 					</th>
 					<th style="width: 400px; text-align: center;">제목
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BTITLE_ASC">▲</button>
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BTITLE_DESC">▼</button>					
+						 <button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BTITLE_ASC">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BTITLE_DESC">▼</button>					
 					</th>
-					<th style="width: 100px; text-align: center;">작성자</th>			
+					<th style="width: 100px; text-align: center;">작성자			
+						<button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BWRITER_ASC">▲</button>
+						<button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BWRITER_DESC">▲</button>
+					</th>
 					<th style="width: 200px; text-align: center;">작성일자
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BDATE_ASC">▲</button>
-						 <button id="sortbtn" class="btn btn-outline-light btn-sm" name="orderCond" value="BDATE_DESC">▼</button>
+						 <button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BDATE_ASC">▲</button>
+						 <button id="sortbtn" class="btn btn-outline-primary btn-sm" name="orderCond" value="BDATE_DESC">▼</button>
 					</th>
 					<th style="width: 100px; text-align: center;">history</th>
 			</thead>
@@ -65,7 +71,7 @@ table {
 							<c:when test="${list.delt_yn eq 'N' }">
 								<tr class="table-active"
 									onclick="location.href='selectBoard.do?b_no=${list.b_no}'">
-									<th><input type="checkbox"  name="delListRow" id="delListRow" value="${list.b_no }" onclick="event.cancelBubble = true;"></th>
+									<th><input type="checkbox" class="form-check-input" name="delListRow" id="delListRow" style="padding:0px 0px 0px 0px;" value="${list.b_no }" onclick="event.cancelBubble = true;"></th>
 									<th style="text-align: center;">${list.b_no }
 										<input type="hidden" value="${list.delt_yn }">
 									</th>
@@ -102,26 +108,28 @@ table {
 			</tbody>
 
 		</table>
-		<button type="button" onclick="deleteValue()">삭제</button>
 		
-	<!-- 검색창,총 게시물 수 Start -->
+		
+	<!-- 삭제버튼,총 게시물 수,글등록 Start -->
+	<div style="width: 1000px; margin: 0 auto; height: 15px; position: relative;">
+		<p style="position: absolute; right: 0; font-size: 5px">총 게시물 :&nbsp;&nbsp;${count }</p>
+	</div>
 	<div style="width: 1000px; margin: 0 auto; height: 50px; position: relative;">
-		<p style="position: absolute; left: 0; font-size: 5px">총 게시물 :&nbsp;&nbsp;${count }</p>
-		<div class="d-flex">
-       			<input class="form-control me-sm-2" type="text" style="width: 250px; height: 38px; position: absolute; right: 0;" placeholder="제목" id="b_title" name="b_title">
-        		<button class="btn btn-secondary my-2 my-sm-0" style="position: absolute;  right: 0;" type="submit">Search</button>
-      	</div>
+		<button type="button" class="btn btn-danger btn-sm" style="position: absolute; left: 0;" onclick="deleteValue()">선택삭제</button>	
+		<button type="button" class="btn btn-primary btn-sm"
+			onclick="location.href='insertBoardForm.do'"
+			style="position: absolute; right: 0;">글 등록</button>
      </div>	
-	<!-- 검색창 End -->
+	<!-- 삭제버튼,글등록 End -->
 		
 		
 	<!-- 페이징 시작-->
 			<input type="hidden" name="page" value="1">
-		</form>
+		
 		<my:paging paging="${paging}" jsFunc="goPage" />
 	<!-- 페이징 끝  -->
 	</div>
-	
+</form>	
 <!-- 게시판 리스트 End -->
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">

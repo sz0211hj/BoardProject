@@ -18,6 +18,8 @@
 			<when test="orderCond == 'BNO_DESC'">B_NO DESC</when>
 			<when test="orderCond == 'BTITLE_ASC'">B_TITLE ASC</when>
 			<when test="orderCond == 'BTITLE_DESC'">B_TITLE DESC</when>
+			<when test="orderCond == 'BWRITER_ASC'">B_WRITER ASC</when>
+			<when test="orderCond == 'BWRITER_DESC'">B_WRITER DESC</when>			
 			<when test="orderCond == 'BDATE_ASC'">B_DATE ASC</when>
 			<when test="orderCond == 'BDATE_DESC'">B_DATE DESC</when>
 			<otherwise>B_NO ASC</otherwise>						
