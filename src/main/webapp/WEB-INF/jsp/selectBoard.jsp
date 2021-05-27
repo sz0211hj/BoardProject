@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -34,7 +35,9 @@
 				</tr>
 				<tr>
 					<th style="width: 100px; text-align: center;">작성일자</th>
-					<td style="width: 400px; text-align: center;">${select.b_date }</td>
+					<td style="width: 400px; text-align: center;">
+						<fmt:formatDate value="${select.b_date }" pattern="yyyy.MM.dd hh:mm:ss" />
+					</td>
 					<th style="width: 100px; text-align: center;">작성자</th>
 					<td style="width: 200px; text-align: center;">${select.b_writer }</td>
 				<tr>
@@ -47,25 +50,10 @@
 			<br/>
 		<div align="center">
 			<button type="button" class="btn btn-primary" onclick="location.href='updateBoardForm.do?b_no=${select.b_no}'">수정</button>
-			<button type="submit" class="btn btn-danger" onclick="deleteAlert('${select.b_no}')">삭제</button>
 			<button type="button" class="btn btn-dark" onclick="location.href='listBoard.do'">목록보기</button>
 		</div>
 	</div>	
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript">
-
-//삭제
-function deleteAlert(str) {
-var yn = confirm("<s:message code="board.del"/>");
-
-if (yn) {
-	alert("<s:message code = "board.del.success"/>");
-	location.href = "deleteBoard.do?b_no=" + str;
-} else {
-	alert("<s:message code="board.del.fail"/>");
-}
-	}
-
-</script>		
+	
 </body>
 </html>

@@ -8,7 +8,7 @@
 		SELECT *
 		FROM BOARD
 		<where>
-			<if test="b_title != null and b_title != ''">
+			<if test="b_title != null and b_title != ''"  >
 				UPPER(B_TITLE) LIKE CONCAT('%', #{b_title}, '%')
 			</if>
 		</where>
@@ -75,7 +75,6 @@
 
 			UPDATE BOARD
 			SET  B_TITLE=#{b_title}
-				, B_WRITER=#{b_writer}
 				, B_CONTENT=#{b_content}
 				, B_DATE = NOW()
 			 WHERE B_NO=#{b_no}
@@ -109,8 +108,7 @@
 				UPPER(B_NO) LIKE CONCAT(#{b_no})
 			</if>
 		</where>
-		ORDER BY LOGNUM
-		LIMIT 5 OFFSET #{start}
+		ORDER BY B_DATE DESC
 	</select>
 
 <!-- 단건로그  -->

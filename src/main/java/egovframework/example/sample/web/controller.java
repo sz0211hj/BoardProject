@@ -66,7 +66,7 @@ public class controller {
 		//게시글List
 		List<BoardVO> list = bm.listBoard(vo);
 		model.addAttribute("list", list);
-		
+			
 		//총 게시글 수 - 삭제된 글 제외
 		int count = bm.getCount(vo);
 		model.addAttribute("count", count);
@@ -94,13 +94,12 @@ public class controller {
 		String writer = vo.getB_writer();
 		String content = vo.getB_content();
 		String val = "";
-		System.out.println("=================================" + content);
 		System.out.println("=================================" + content.length());
 			if(title.length() > 50){
 				val = "b_title.error";
 			}else if(writer.length() > 50){
 				val = "b_writer.error";
-			}else if(content.length() > 250){
+			}else if(content.length() > 325){
 				val = "b_content.error";
 			}else{
 				bm.insertBoard(vo);	
@@ -135,18 +134,7 @@ public class controller {
 	
 	//로그 조회
 	@RequestMapping("/logList.do")
-	public String logList(BoardBackupVO vo, Model model,Paging paging){
-		paging.setPageUnit(5); //한 페이지에 표시되는 레코드 건수
-		paging.setPageSize(3); // 표시 되는 페이지 번호
-		//페이징
-		if(vo.getPage() == null ){
-			vo.setPage(1);
-		}
-		vo.setStart(paging.getFirst());
-		vo.setEnd(paging.getLast());
-		paging.setTotalRecord(bm.getCountLog(vo));
-		model.addAttribute("paging", paging);  //페이징
-		
+	public String logList(BoardBackupVO vo, Model model){
 		List<BoardBackupVO> logList = bm.logList(vo);
 		model.addAttribute("logList", logList);
 		return "logList";
