@@ -132,11 +132,12 @@ public class controller {
 	}
 
 	
-	//로그 조회
+	//로그 전체 조회
 	@RequestMapping("/logList.do")
 	public String logList(BoardBackupVO vo, Model model){
 		List<BoardBackupVO> logList = bm.logList(vo);
 		model.addAttribute("logList", logList);
 		return "logList";
 	}
+	
 }

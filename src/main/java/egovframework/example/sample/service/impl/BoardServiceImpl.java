@@ -55,9 +55,5 @@ public class BoardServiceImpl implements BoardService{
 		return boardDAO.logList(vo);
 	}
 
-	@Override
-	public BoardBackupVO logListOne(BoardBackupVO vo) {
-		return boardDAO.logListOne(vo);
-	}
 
 }

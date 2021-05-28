@@ -33,6 +33,5 @@ public interface BoardMapper {
 	//로그조회
 	public List<BoardBackupVO> logList(BoardBackupVO vo);
 
-	//로그단건조회
-	public BoardBackupVO logListOne(BoardBackupVO vo);
+
 }

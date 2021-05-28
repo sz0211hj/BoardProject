@@ -17,30 +17,18 @@ table {
 	width: 1400px !important;
 }
 
-/* tr:nth-child(3n+0) {background:#999 !important;}
-tr:nth-child(3n+1) {background:#CCC !important;}
-tr:nth-child(3n+2) {background:#FFF !important;} */
 </style> 
 </head>
 <body>
 	<div align="center">
-		<h1>전체 변경 내역</h1>
+		<h1>변경 내역</h1>
 	</div>
 		<!-- 검색창,게시글보기 Start -->
 		<div style="width: 1400px; margin: 0 auto; margin-bottom: 0; height: 40px; position: relative;">
-			<form class="d-flex" action="logList.do">
-				<input type="hidden" name="page" value="1">
-       			<input class="form-control me-sm-2" type="text" style="width: 250px; height: 38px; position: absolute; left: 0;" placeholder="글 번호" id="b_no" name="b_no">
-      			<button class="btn btn-secondary my-2 my-sm-0" style="position: absolute;   margin-left:250px; left: 0;" type="submit">Search</button>
       			<button type="button" class="btn btn-primary" onclick="location.href='listBoard.do'"
 								style="position: absolute; margin-left: 1280px;">&laquo; 게시글 보기</button>
-      		</form>
       	</div>		
-      	 <div style="width: 1400px; margin: 0 auto; height: 20px; position: relative;">
-					<p style="position: absolute; right: 0; font-size: 15px; font-weight: bold; color: red;">
-						최신 변경 순으로 나열됩니다.
-					</p>
-		</div>
+
 	<!-- 검색창 End -->
 
 	<!-- 로그List Start -->
@@ -60,10 +48,10 @@ tr:nth-child(3n+2) {background:#FFF !important;} */
 			<tbody>
 			<c:forEach items="${logList }" var="logList">
 					<tr>
-						<th id="bno"  style="text-align: center; vertical-align:middle;">
+						<th style="text-align: center; vertical-align:middle;">
 							<!-- 글 번호 별 변경순서 script로 구현 -->
 						</th>
-						<td style="text-align: center; vertical-align:middle;">${logList.b_no}</td>
+						<td id="bno" style="text-align: center; vertical-align:middle;">${logList.b_no}</td>
 						<td style="text-align: center; vertical-align:middle;">
 							<fmt:formatDate value="${logList.b_date }" pattern="yyyy.MM.dd hh:mm:ss" />
 						</td>
@@ -71,9 +59,10 @@ tr:nth-child(3n+2) {background:#FFF !important;} */
 							<c:if test="${logList.b_state eq 'C' }">등록</c:if>
 							<c:if test="${logList.delt_yn eq 'N' && logList.b_state eq 'U' }">수정</c:if>
 							<c:if test="${logList.delt_yn eq 'Y' && logList.b_state eq 'U'}">삭제</c:if>
+						<input id="hstatus" type="hidden" value="${logList.b_state }${logList.delt_yn}">
 						</td>
-						<td style="vertical-align:middle;">${logList.b_title }</td>
-						<td style="vertical-align:middle;">${logList.b_content }</td>
+						<td id="btitle" style="vertical-align:middle;">${logList.b_title }</td>
+						<td id="bcontent" style="vertical-align:middle;">${logList.b_content }</td>
 						<td style="text-align: center; vertical-align:middle;">${logList.b_writer }</td>
 					</tr>
 			</c:forEach>
@@ -97,20 +86,45 @@ tr:nth-child(3n+2) {background:#FFF !important;} */
 	
 	//변경 이력 색 표시
 		$("tbody tr").each(function(){
-			var state = $(this).children().eq(3).text();
-				//console.log(state);
-			if(state == 'Y'){
-				 $(this).css("color", "red")	
-			}		// 삭제
+			// 삭제일 경우 배경색
+			var statusText = $('#hstatus').val();
+			console.log(statusText);
+
 			
-			var num = $(this).children().eq(1).text();	// 위 tr 글번호
-				console.log (num);
-			var numAfter = $(this).next().children().eq(1).text(); // 아래 tr 글번호
-				console.log("====" + numAfter);
+			var numBefor = $(this).children("#bno");	// 위 tr 글번호 - 수정 후
+			var numAfter = $(this).next().children("#bno"); // 아래 tr 글번호 - 수정 전
+					//console.log(" 수정 전 번호: " + numBefor.text());	
+					//console.log(" 수정 후 번호: " + numAfter.text());
+				
+				
+			var titleBefor = $(this).children("#btitle");	// 위 글 제목
+			var titleAfter = $(this).next().children("#btitle"); // 아래글 제목
+					//console.log("수정 전 제목:" + titleBefor.text())	
+					//console.log("수정 후 제목:" + titleAfter.text())	
+				
+			var contentBefor = $(this).children("#bcontent"); // 위 글 내용
+			var contentAfter = $(this).next().children("#bcontent"); //아래글 내용
+					//console.log("수정 전 내용:" + contentBefor.text())	
+					//console.log("수정 후 내용:" + contentAfter.text())
 			
+			//글 번호 같고 제목, 내용 수정 됐을 경우 빨간글씨 표시
+			if(numBefor.text() == numAfter.text() 
+					&& titleBefor.text() != titleAfter.text()) {	//제목,내용 모두 수정			
+					titleAfter.css("color", "#F06464");
+					titleAfter.css("font-weight", "bold");
+					titleAfter.css("background-color","#FDF5DC");
+					titleBefor.css("background-color","#FDF5DC");
+			}else if(numBefor.text() == numAfter.text() 
+					&& contentBefor.text() != contentAfter.text()){
+					contentAfter.css("color", "#0078FF");
+					contentAfter.css("font-weight", "bold");
+					contentAfter.css("background-color","#E8F5FF");
+					contentBefor.css("background-color","#E8F5FF");					
+			}
+
 		});
 		
-	
+
 	</script>
 
 

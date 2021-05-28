@@ -91,13 +91,6 @@
 			</foreach>
 	</update>
 
-<!-- 	<delete id="deleteBoard" parameterType="BoardVO">
-
-			DELETE FROM BOARD
-			WHERE B_NO=#{b_no}
-
-	</delete> -->
-
 <!-- 로그기록 -->
 	<select id="logList" resultType="BoardBackupVO">
 	
@@ -108,7 +101,7 @@
 				UPPER(B_NO) LIKE CONCAT(#{b_no})
 			</if>
 		</where>
-		ORDER BY B_DATE DESC
+		ORDER BY B_DATE
 	</select>
 
 <!-- 단건로그  -->
